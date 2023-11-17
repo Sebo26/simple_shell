@@ -14,6 +14,9 @@ int main(void)
 		prompt();
 		reader(command, sizeof(command));
 		executer(command);
+		exec_arg(command);
+		exec_path(command);
+		my_exit();
 	}
 return (0);
 }
