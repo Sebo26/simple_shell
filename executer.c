@@ -8,22 +8,29 @@
  */
 void executer(const char *command)
 {
-	char *args[2];
+	char const **args = malloc(2 * sizeof(char *));
 	pid_t child_ID;
 
-	args[0] = (char *)command;
+	if (args == NULL)
+	{
+		perror("Memory allocation error");
+		exit(EXIT_FAILURE);
+	}
+	args[0] = command;
 	args[1] = NULL;
 
 	child_ID = fork();
 	if (child_ID == -1)
 	{
 		perror("child_ID not created, fork");
+		free(args);
 		exit(EXIT_FAILURE);
 	}
 	else if (child_ID == 0)
 	{
-		execve(command, args, NULL);
+		execve(command, (char *const *)args, NULL);
 		perror("Execution not successful");
+		free(args);
 		exit(EXIT_FAILURE);
 	}
 	else
